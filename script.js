@@ -12,7 +12,7 @@ console.log(isAValidWord("nevan"));
 console.log(wordsUsingLetters("radiwyz"));
 
 function wordsUsingLetters(letters) {
-  return searchNextLetters(letters, validWordTrie);
+  return searchNextLetters(letters, validWordTrie).filter(word => word.length > 3);
 }
 
 function searchNextLetters(letters, level, fragment="", words=[]) {
