@@ -12,8 +12,9 @@ console.log(isAValidWord("nevan"));
 console.log(wordsUsingLetters("radiwyz"));
 
 function wordsUsingLetters(letters) {
+  let level = validWordTrie;
   for (const letter of letters) {
-    console.log(validWordTrie[letter]);
+    let sublevel = level[letter];
   }
   return true;
 }
@@ -21,7 +22,7 @@ function wordsUsingLetters(letters) {
 /*
   1. Check for trees with the letters
   2. If any of those trees have "", we've made a word!
-  3. Do this recursively
+  3. Repeat step 1 on that tree
 */
 
 function isAValidWord(guess) {
