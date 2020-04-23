@@ -19,6 +19,35 @@ function wordsUsingLetters(letters) {
   return true;
 }
 
+const testTrie = {
+  w: {
+    a: {
+      r: {
+        "": "",
+        d: {
+          "": ""
+        }
+      }
+    },
+    i: {
+      z: {
+        a: {
+          r: {
+            d: {
+              "": "",
+              r: {
+                y: {
+                  "": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 /*
   1. Check for trees with the letters
   2. If any of those trees have "", we've made a word!
