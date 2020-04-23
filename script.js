@@ -12,11 +12,19 @@ console.log(isAValidWord("nevan"));
 console.log(wordsUsingLetters("radiwyz"));
 
 function wordsUsingLetters(letters) {
-  let level = validWordTrie;
-  for (const letter of letters) {
-    let sublevel = level[letter];
+  return searchNextLetters(letters, validWordTrie);
+}
+
+function searchNextLetters(letters, level, fragment="", words=[]) {
+  if ("" in level) {
+    words.push(fragment);
   }
-  return true;
+  for (const letter of letters) {
+    if (level[letter]) {
+      words = searchNextLetters(letters, level[letter], fragment+letter, words);
+    }
+  }
+  return words;
 }
 
 const testTrie = {
