@@ -2,14 +2,71 @@
 validWordTrie
 */
 
-/* If you're feeling fancy you can add interactivity 
-    to your site with Javascript */
+const letters = "radiwyz";
+const key = "r";
+const min = 4;
+let correct = [];
 
-console.log(isAValidWord("hello"));
+document.getElementById("guesser").addEventListener('submit', function(e) {
+  e.preventDefault();
+  const $guess = document.getElementById("guess");
+  const guess = $guess.value.toLowerCase();
+    
+  if(!containsLetter(guess, key)) {
+    flash(`Your guess must contain the letter ${key.toUpperCase()}`);
+  } else if (!containsValidLetters(guess, letters)) {
+    flash(`You can only use the provided letters!`);
+  } else if (guess.length < min) {
+    flash(`Words must be at least ${min} letters long!`);
+  } else if (!isAValidWord(guess)) {
+    flash(`“${guess}” does not appear in the word list.`);
+  } else if (alreadyFound(guess, correct)) {
+    flash(`You already found “${guess}”!`)
+  } else {
+    correct = success(guess, correct);
+    printCorrect(correct);
+  }
+  
+  $guess.value = "";
+});
 
-console.log(isAValidWord("nevan"));
+function printCorrect(correct) {
+  const $correct = document.getElementById("correct");
+  console.log(correct.map(function(word) {
+    return `<li>${word}</li>`;
+  }));
+  $correct.innerHTML = correct.map(function(word) {
+    return `<li>${word}</li>`;
+  }).join('');
+}
 
-console.log(wordsUsingLetters("radiwyz"));
+function success(guess, correct=[]) {
+  return correct.concat(guess).sort();
+}
+
+function flash(message, duration=3000) {
+  const $flash = document.getElementById("flash");
+  $flash.innerHTML = message;
+  $flash.classList.add("active");
+  setTimeout(function() {
+    $flash.classList.remove("active");
+  }, duration);
+}
+
+function containsValidLetters(guess, letters) {
+  for (const letter of guess) {
+    if (!(letters.includes(letter))) return false;
+  }
+  return true;
+}
+
+function containsLetter(guess, letter) {
+  return guess.includes(letter);
+}
+
+function alreadyFound(guess, correct) {
+  return correct.includes(guess);
+}
 
 function wordsUsingLetters(letters) {
   return searchNextLetters(letters, validWordTrie).filter(word => word.length > 3);
@@ -26,41 +83,6 @@ function searchNextLetters(letters, level, fragment="", words=[]) {
   }
   return words;
 }
-
-const testTrie = {
-  w: {
-    a: {
-      r: {
-        "": "",
-        d: {
-          "": ""
-        }
-      }
-    },
-    i: {
-      z: {
-        a: {
-          r: {
-            d: {
-              "": "",
-              r: {
-                y: {
-                  "": ""
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-};
-
-/*
-  1. Check for trees with the letters
-  2. If any of those trees have "", we've made a word!
-  3. Repeat step 1 on that tree
-*/
 
 function isAValidWord(guess) {
   let level = validWordTrie;

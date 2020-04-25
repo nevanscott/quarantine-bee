@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Hello!</title>
+    <title>Find the words!</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,11 +14,31 @@
     <script src="/script.js" defer></script>
   </head>  
   <body>
-    <h1>Hi there!</h1>
+  
+    <h1>Find the words!</h1>
     
     <p>
-      I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
+      Here are the letters you can use:
+      <strong>
+        <kbd class="key letter">r</kbd>
+        <kbd class="letter">a</kbd>
+        <kbd class="letter">d</kbd>
+        <kbd class="letter">i</kbd>
+        <kbd class="letter">w</kbd>
+        <kbd class="letter">y</kbd>
+        <kbd class="letter">z</kbd>
+      </strong>
     </p>
+    
+    <form id="guesser">
+      <input type="text" id="guess" autofocus>
+      <input type="submit" value="Guess">
+    </form>
+    
+    <div id="flash"></div>
+    
+    <ul id="correct"></ul>
+    
 
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
