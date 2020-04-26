@@ -10,39 +10,26 @@
     <link rel="stylesheet" href="/style.css">
     
     <!-- import the webpage's javascript file -->
-    <script src="/dictionary.js" defer></script>
+    <script src="/en.js" defer></script>
     <script src="/script.js" defer></script>
   </head>  
   <body>
   
     <h1>Find the words!</h1>
     
-    <p>
-      Here are the letters you can use:
-      <strong>
-        <kbd class="key letter">r</kbd>
-        <kbd class="letter">a</kbd>
-        <kbd class="letter">d</kbd>
-        <kbd class="letter">i</kbd>
-        <kbd class="letter">w</kbd>
-        <kbd class="letter">y</kbd>
-        <kbd class="letter">z</kbd>
-      </strong>
-    </p>
+    <p>Here are the letters you can use:</p>
+    <p id="letters"></p>
     
     <form id="guesser">
-      <input type="text" id="guess" autofocus>
+      <input type="text" id="guess" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <input type="submit" value="Guess">
     </form>
     
     <div id="flash"></div>
     
+    <p id="counter"></p>
+    
     <ul id="correct"></ul>
     
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
   </body>
 </html>

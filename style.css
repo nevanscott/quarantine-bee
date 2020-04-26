@@ -13,9 +13,13 @@ h1 {
 .letter {
   background: whitesmoke;
   border-radius: 3px;
+  display: inline-block;
   font-family: inherit;
+  font-weight: bold;
   padding: 0.25em 0.5em;
+  text-align: center;
   text-transform: uppercase;
+  width: 1em;
 }
 
 .key {

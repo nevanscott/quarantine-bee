@@ -2,42 +2,62 @@
 validWordTrie
 */
 
-const letters = "radiwyz";
-const key = "r";
+const url = new URL(window.location.href);
+
+const letters = url.searchParams.get("letters") || "radiwyz";
+const key = letters[0];
 const min = 4;
-let correct = [];
+let found = [];
+
+const wordCount = wordsUsingLetters(letters).filter(function(word) {
+  return word.includes(key);
+}).length;
+
+renderGame(letters, key);
+
+updateCounter(found, wordCount);
 
 document.getElementById("guesser").addEventListener('submit', function(e) {
   e.preventDefault();
   const $guess = document.getElementById("guess");
   const guess = $guess.value.toLowerCase();
     
-  if(!containsLetter(guess, key)) {
-    flash(`Your guess must contain the letter ${key.toUpperCase()}`);
-  } else if (!containsValidLetters(guess, letters)) {
+  if (!containsValidLetters(guess, letters)) {
     flash(`You can only use the provided letters!`);
+  } else if(!containsLetter(guess, key)) {
+    flash(`Your guess must contain the letter ${key.toUpperCase()}`);
   } else if (guess.length < min) {
     flash(`Words must be at least ${min} letters long!`);
   } else if (!isAValidWord(guess)) {
     flash(`“${guess}” does not appear in the word list.`);
-  } else if (alreadyFound(guess, correct)) {
+  } else if (alreadyFound(guess, found)) {
     flash(`You already found “${guess}”!`)
   } else {
-    correct = success(guess, correct);
-    printCorrect(correct);
+    found = success(guess, found);
+    printFound(found);
+    updateCounter(found, wordCount);
   }
   
   $guess.value = "";
 });
 
-function printCorrect(correct) {
-  const $correct = document.getElementById("correct");
-  console.log(correct.map(function(word) {
-    return `<li>${word}</li>`;
-  }));
-  $correct.innerHTML = correct.map(function(word) {
+function renderGame(letters, key) {
+  const $letters = document.getElementById("letters");
+  $letters.innerHTML = letters.split("").map(function(letter) {
+    return `<kbd class="${ (letter===key) ? "key " : "" }letter">${letter}</kbd>`;
+  }).join(" ");
+}
+
+function printFound(found) {
+  const $found = document.getElementById("correct");
+  $found.innerHTML = found.map(function(word) {
     return `<li>${word}</li>`;
   }).join('');
+}
+
+function updateCounter(found, total) {
+  const $counter = document.getElementById("counter");
+  $counter.innerHTML = `You’ve found <strong>${found.length}</strong> out of ${total} words.`
 }
 
 function success(guess, correct=[]) {
@@ -64,8 +84,8 @@ function containsLetter(guess, letter) {
   return guess.includes(letter);
 }
 
-function alreadyFound(guess, correct) {
-  return correct.includes(guess);
+function alreadyFound(guess, found) {
+  return found.includes(guess);
 }
 
 function wordsUsingLetters(letters) {
