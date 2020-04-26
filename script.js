@@ -46,6 +46,12 @@ document.getElementById("guesser").addEventListener('submit', function(e) {
   $guess.value = "";
 });
 
+document.getElementById("shuffle").addEventListener("click", function(e) {
+  e.preventDefault();
+  const shuffled = shuffle(letters.split('')).join('');
+  renderGame(shuffled, key);
+});
+
 function renderGame(letters, key) {
   const $letters = document.getElementById("letters");
   $letters.innerHTML = letters.split("").map(function(letter) {
@@ -165,4 +171,15 @@ function isAValidWord(guess) {
     if (!level) return false;
   }
   return "" in level;
+}
+
+function shuffle(array) {
+  let m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
 }

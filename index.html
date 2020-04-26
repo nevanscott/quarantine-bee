@@ -5,31 +5,32 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">
-    
+
     <!-- import the webpage's javascript file -->
     <script src="/popular.js" defer></script>
     <script src="/script.js" defer></script>
-  </head>  
+  </head>
   <body>
-  
+
     <h1>Find the words!</h1>
-    
+
     <p>Here are the letters you can use:</p>
     <p id="letters"></p>
-    
+
     <form id="guesser">
       <input type="text" id="guess" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <input type="submit" value="Guess">
+      <button id="shuffle">Shuffle</button
     </form>
-    
+
     <div id="flash"></div>
-    
+
     <p id="counter"></p>
-    
+
     <ul id="correct"></ul>
-    
+
   </body>
 </html>
