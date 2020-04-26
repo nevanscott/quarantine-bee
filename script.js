@@ -6,6 +6,7 @@ const letters = getLetters();
 const key = letters[0];
 const min = 4;
 let found = [];
+let guesslog = loadGuessLog(letters);
 
 const wordCount = wordsUsingLetters(letters).filter(function(word) {
   return word.includes(key);
@@ -13,12 +14,18 @@ const wordCount = wordsUsingLetters(letters).filter(function(word) {
 
 renderGame(letters, key);
 
+found = rerunGuesses(guesslog, letters, key);
+
+printFound(found);
+
 updateCounter(found, wordCount);
 
 document.getElementById("guesser").addEventListener('submit', function(e) {
   e.preventDefault();
   const $guess = document.getElementById("guess");
   const guess = $guess.value.toLowerCase();
+
+  guesslog = logGuess(guess, letters, guesslog);
 
   if (!containsValidLetters(guess, letters)) {
     flash(`You can only use the provided letters!`);
@@ -77,7 +84,7 @@ function getLetters() {
 }
 
 function getRandomQualifiedWord() {
-  qualified = getAllQualifiedWords();
+  const qualified = getAllQualifiedWords();
   return getRandomFromArray(qualified);
 }
 
@@ -91,6 +98,33 @@ function getAllQualifiedWords() {
     "radiwyz",
     "adklrwy"
   ];
+}
+
+function loadGuessLog(letters) {
+  return JSON.parse(localStorage.getItem(letters)) || [];
+}
+
+function logGuess(guess, letters, log) {
+  const updated = log.concat(guess);
+  localStorage.setItem(letters, JSON.stringify(updated));
+  return updated;
+}
+
+function rerunGuesses(guesses, letters, key) {
+  return uniq(guesses).filter(function(guess) {
+    return goodGuess(guess, letters, key);
+  }).sort();
+}
+
+function goodGuess(guess, letters, key) {
+  return containsValidLetters(guess, letters) && containsLetter(guess, key) && (guess.length >= min) && isAValidWord(guess);
+}
+
+function uniq(a) {
+  const seen = {};
+  return a.filter(function(item) {
+    return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+  });
 }
 
 function containsValidLetters(guess, letters) {
