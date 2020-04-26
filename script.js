@@ -48,14 +48,14 @@ document.getElementById("guesser").addEventListener('submit', function(e) {
 
 document.getElementById("shuffle").addEventListener("click", function(e) {
   e.preventDefault();
-  const shuffled = shuffle(letters.split('')).join('');
+  const shuffled = letters[0] + shuffle(letters.split('').slice(1)).join('');
   renderGame(shuffled, key);
 });
 
 function renderGame(letters, key) {
   const $letters = document.getElementById("letters");
   $letters.innerHTML = letters.split("").map(function(letter) {
-    return `<kbd class="${ (letter===key) ? "key " : "" }letter">${letter}</kbd>`;
+    return `<kbd class="${ (letter===key) ? "key" : "outer" } letter">${letter}</kbd>`;
   }).join(" ");
 }
 
