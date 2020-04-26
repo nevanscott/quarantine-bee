@@ -19,20 +19,25 @@ async function processLineByLine(path) {
   });
 }
 
-processLineByLine('en.txt').then(function(validWordLookup){
-  const validWordTrie = {};
-  for (const word in validWordLookup) {
-      let currentSubTrie = validWordTrie;
-      for (const letter of word) {
-          if (!(letter in currentSubTrie)) {
-              currentSubTrie[letter] = {};
-          }
-          currentSubTrie = currentSubTrie[letter];
-      }
-      currentSubTrie[''] = ''; // an empty string key means that the letter keys above this form a valid word
-  }
-  const re = /\"([a-z])\"/g;
-  const data = JSON.stringify(validWordTrie).replace(re, '$1').replace(/\"/g, "'");
-  const output = "const validWordTrie = " + data + ";";
-  fs.writeFileSync('en.js', output);
-});
+function generateTrieFile(source, dest) {
+  processLineByLine(source).then(function(validWordLookup){
+    const validWordTrie = {};
+    for (const word in validWordLookup) {
+        let currentSubTrie = validWordTrie;
+        for (const letter of word) {
+            if (!(letter in currentSubTrie)) {
+                currentSubTrie[letter] = {};
+            }
+            currentSubTrie = currentSubTrie[letter];
+        }
+        currentSubTrie[''] = ''; // an empty string key means that the letter keys above this form a valid word
+    }
+    const re = /\"([a-z])\"/g;
+    const data = JSON.stringify(validWordTrie).replace(re, '$1').replace(/\"/g, "'");
+    const output = "const validWordTrie = " + data + ";";
+    fs.writeFileSync(dest, output);
+  });
+}
+
+generateTrieFile('en.txt', 'en.js');
+generateTrieFile('popular.txt', 'popular.js');
