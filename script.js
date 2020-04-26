@@ -2,9 +2,7 @@
 validWordTrie
 */
 
-const url = new URL(window.location.href);
-
-const letters = url.searchParams.get("letters") || "radiwyz";
+const letters = getLetters();
 const key = letters[0];
 const min = 4;
 let found = [];
@@ -21,7 +19,7 @@ document.getElementById("guesser").addEventListener('submit', function(e) {
   e.preventDefault();
   const $guess = document.getElementById("guess");
   const guess = $guess.value.toLowerCase();
-    
+
   if (!containsValidLetters(guess, letters)) {
     flash(`You can only use the provided letters!`);
   } else if(!containsLetter(guess, key)) {
@@ -37,7 +35,7 @@ document.getElementById("guesser").addEventListener('submit', function(e) {
     printFound(found);
     updateCounter(found, wordCount);
   }
-  
+
   $guess.value = "";
 });
 
@@ -71,6 +69,28 @@ function flash(message, duration=3000) {
   setTimeout(function() {
     $flash.classList.remove("active");
   }, duration);
+}
+
+function getLetters() {
+  const url = new URL(window.location.href);
+  return url.searchParams.get("letters") || getRandomQualifiedWord();
+}
+
+function getRandomQualifiedWord() {
+  qualified = getAllQualifiedWords();
+  return getRandomFromArray(qualified);
+}
+
+function getRandomFromArray(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function getAllQualifiedWords() {
+  return [
+    "scdeoru",
+    "radiwyz",
+    "adklrwy"
+  ];
 }
 
 function containsValidLetters(guess, letters) {
